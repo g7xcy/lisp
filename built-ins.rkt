@@ -4,5 +4,5 @@
 
 (define initial-env
   (extend-env* empty-env
-               '(+ - * /)
-               (list + - * /)))
+               '(+ - * / car cdr cons)
+               (list + - * / car cdr cons)))
