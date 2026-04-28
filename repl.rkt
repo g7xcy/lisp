@@ -45,7 +45,7 @@
             [eval-res (eval-expr ast env)]
             [value (car eval-res)]
             [new-env (cdr eval-res)])
-           (displayln (pretty-print value))
+           (displayln (string-append "OI: " (pretty-print value)))
            (loop new-env)))])))
 
 (module+ main (repl))
