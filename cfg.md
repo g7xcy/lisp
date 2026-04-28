@@ -1,12 +1,12 @@
-- Statement  -> Expr \\
-- Expr       -> Atom | List | Quote \\
-- Atom       -> Number | Symbol \\
-- List       -> ( Elements ) \\
-- Elements   -> Expr Elements | ε \\
-- Quote      -> ' Expr \\
+- Statement  -> Expr \
+- Expr       -> Atom | List | Quote \
+- Atom       -> Number | Symbol \
+- List       -> ( Elements ) \
+- Elements   -> Expr Elements | ε \
+- Quote      -> ' Expr \
 
-- Digit      -> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 \\
-- Number     -> Digit NumberRest \\
-- NumberRest -> Digit NumberRest | ε \\
-- Char       -> ASCII (excluding whitespace, (, ), ') \\
-- Symbol     -> Char Symbol | Char \\
+- Digit      -> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 \
+- Number     -> Digit NumberRest \
+- NumberRest -> Digit NumberRest | ε \
+- Char       -> ASCII (excluding whitespace, (, ), ') \
+- Symbol     -> Char Symbol | Char \
