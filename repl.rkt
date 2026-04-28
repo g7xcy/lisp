@@ -32,9 +32,9 @@
     (flush-output)
     (define input (read-line))
     (cond
-      [(eof-object? input) (displayln "\nbye")]
+      [(eof-object? input) (displayln "\n1551")]
       [(string=? input "") (loop env)]
-      [(string=? input ":quit") (displayln "bye")]
+      [(string=? input ":quit") (displayln "1551")]
       [else
        (with-handlers ([exn:fail?
                         (lambda (e)
