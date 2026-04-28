@@ -21,7 +21,7 @@
     [`(quote ,x) (cons (quote->value x) env)]
     ;; if
     [`(List (Symbol if) ,condition ,then ,else)
-     (let ([c (eval-expr condition env)])
+     (let ([c (car (eval-expr condition env))])
        (if c
            (eval-expr then env)
            (eval-expr else env)))]
