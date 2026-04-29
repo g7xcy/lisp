@@ -1,23 +1,29 @@
 #lang racket
-(provide empty-env extend-env extend-env* lookup)
+(provide empty-env extend-env extend-env/ref extend-env* lookup)
 
-;; Env :: Symbol -> Value
-;; empty-env :: Symbol -> Value
+;; Env :: Symbol -> (box Value)
+;; empty-env :: Symbol -> (box Value)
 (define empty-env
   (lambda (x)
     (error
       (format "Unbound variable: ~a" x))))
 
-;; lookup :: Env -> Symbol -> Value
+;; lookup :: Env -> Symbol -> (box Value)
 (define (lookup env x)
-  (env x))
+  (unbox (env x)))
 
 ;; extend-env :: Env -> Symbol -> Value -> Env
 (define (extend-env env x v)
   (lambda (y)
     (if (eq? x y)
-        v
-        (lookup env y))))
+        (box v)
+        (env y))))
+
+(define (extend-env/ref env x bx)
+  (lambda (y)
+    (if (eq? x y)
+        bx
+        (env y))))
 
 ;; extend-env* :: Env -> [Symbol] -> [Value] -> Env
 (define (extend-env* env xs vs)

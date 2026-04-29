@@ -2,9 +2,14 @@
 (require "env.rkt")
 (provide initial-env)
 
-(define y-comb (lambda (fact) (lambda (x) (if (<= x 1) 1 (* x (fact (- x 1)))))))
+(define (lisp-apply f args) (apply f args))
+(define (lisp-list . xs) xs)
+
+(define built-in-xs '(+ - * / car cdr cons < > not apply null? pair? number? symbol? list))
+(define built-in-vs (list + - * / car cdr cons < > not lisp-apply null? pair? number? symbol? lisp-list))
 
 (define initial-env
-  (extend-env* empty-env
-               '(+ - * / car cdr cons < > not y-comb)
-               (list + - * / car cdr cons < > not y-comb)))
+  (extend-env*
+    empty-env
+    built-in-xs
+    built-in-vs))

@@ -28,9 +28,11 @@
     ;; define expr
     [`(List (Symbol define) (Symbol ,x) ,expr)
      (let*
-       ([res (eval-expr expr env)]
-        [val (car res)]
-        [new-env (extend-env env x val)])
+       ([bx (box #f)]
+        [new-env (extend-env/ref env x bx)]
+        [res (eval-expr expr new-env)]
+        [val (car res)])
+       (set-box! bx val)
        (cons val new-env))]
     ;; let expr
     [`(List (Symbol let) (List ,bindings ...) ,body)
@@ -47,8 +49,25 @@
         [new-env (extend-env* env xs vs)])
        (cons (car (eval-expr body new-env)) env))]
     ;; letrec expr
-    ; [`(List (Symbol letrec) (List ,bindings) ,body)
-    ;  ()]
+    [`(List (Symbol letrec) (List ,bindings ...) ,body)
+     (let* ([xs
+             (map (lambda (b)
+                    (match b
+                      [`(List (Symbol ,x) ,_) x]))
+                  bindings)]
+            [boxes (map (const (box #f)) xs)]
+            [rec-env (foldl (lambda (pair env)
+                              (extend-env/ref env (car pair) (cdr pair)))
+                            env
+                            (map cons xs boxes))])
+       (for-each
+         (lambda (b bx)
+           (match b
+             [`(List (Symbol ,_) ,expr)
+              (set-box! bx (car (eval-expr expr rec-env)))]))
+         bindings
+         boxes)
+       (eval-expr body rec-env))]
     ;; lambda expr
     [`(List (Symbol lambda) (List ,params ...) ,body)
      (let ([xs (map (lambda (p)
