@@ -46,6 +46,9 @@
                  bindings)]
         [new-env (extend-env* env xs vs)])
        (cons (car (eval-expr body new-env)) env))]
+    ;; letrec expr
+    ; [`(List (Symbol letrec) (List ,bindings) ,body)
+    ;  ()]
     ;; lambda expr
     [`(List (Symbol lambda) (List ,params ...) ,body)
      (let ([xs (map (lambda (p)
